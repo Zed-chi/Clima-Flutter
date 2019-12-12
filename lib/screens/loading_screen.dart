@@ -26,7 +26,13 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   void getData() async {
     Response res = await get("https://api.openweathermap.org/data/2.5/weather?lat=35&lon=139&appId=e155690e9c5a721192a3d32032c12449");
-    print(res);
+    if (res.statusCode == 200){
+      print(res.body);
+    } else{
+      print("some error");
+    }
+    
+    
   }
 
   @override
@@ -36,6 +42,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
         child: RaisedButton(
           onPressed: () {
             getLocation();
+            getData();
           },
           child: Text('Get Location'),
         ),
