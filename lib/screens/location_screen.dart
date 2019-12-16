@@ -74,3 +74,8 @@ class _LocationScreenState extends State<LocationScreen> {
     );
   }
 }
+
+
+//  var temp =  jsonData["main"]["temp"];
+//     var condition = jsonData["weather"][0]["id"];
+//     var city = jsonData["name"];

@@ -33,14 +33,11 @@ class _LoadingScreenState extends State<LoadingScreen> {
       "https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&appId=$apiKey"
     );
     var jsonData = await nethelper.getData();
-    var temp =  jsonData["main"]["temp"];
-    var condition = jsonData["weather"][0]["id"];
-    var city = jsonData["name"];
 
     Navigator.push(
       context, 
       MaterialPageRoute(
-        builder:(context){return LocationScreen();} 
+        builder:(context){return LocationScreen(locationWeather: jsonData,);} 
       )
     );
   }
