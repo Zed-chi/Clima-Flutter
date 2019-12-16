@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import "../services/location.dart";
-import "package:http/http.dart";
+import '../services/networking.dart';
+import "./location_screen.dart";
+import "package:flutter_spinkit/flutter_spinkit.dart";
+const apiKey = "e155690e9c5a721192a3d32032c12449";
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -8,44 +11,48 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
+
+  double lat;
+  double lon;
+  
   @override
   void initState() {    
     super.initState();
-    getLocation();
-    getData();
+    getLocationData();
+
   }
 
 
-  void getLocation() async {        
+  void getLocationData() async {        
     Location location = Location();
     await location.getLocation();
-    print(location.latitude);
-    print(location.longitude);
+    lat = double.parse(location.latitude);
+    lon = double.parse(location.longitude);
 
-  }
+    NetworkHelper nethelper = NetworkHelper(
+      "https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&appId=$apiKey"
+    );
+    var jsonData = await nethelper.getData();
+    var temp =  jsonData["main"]["temp"];
+    var condition = jsonData["weather"][0]["id"];
+    var city = jsonData["name"];
 
-  void getData() async {
-    Response res = await get("https://api.openweathermap.org/data/2.5/weather?lat=35&lon=139&appId=e155690e9c5a721192a3d32032c12449");
-    if (res.statusCode == 200){
-      print(res.body);
-    } else{
-      print("some error");
-    }
-    
-    
+    Navigator.push(
+      context, 
+      MaterialPageRoute(
+        builder:(context){return LocationScreen();} 
+      )
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: RaisedButton(
-          onPressed: () {
-            getLocation();
-            getData();
-          },
-          child: Text('Get Location'),
-        ),
+        child: SpinKitDoubleBounce(
+          color: Colors.white,
+          size: 100,
+        )
       ),
     );
   }
