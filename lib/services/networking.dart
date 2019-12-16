@@ -9,6 +9,7 @@ class NetworkHelper{
   Future getData() async {
     Response res = await get(url);
     if (res.statusCode == 200){
+      print("code is 200");
       return jsonDecode(res.body);      
     } else{
       print("some error");
