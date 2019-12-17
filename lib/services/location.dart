@@ -5,6 +5,8 @@ class Location {
   String latitude;
   String longitude;
 
+
+
   Future<void> getLocation() async {   
     // print("started")     ;
     try{
